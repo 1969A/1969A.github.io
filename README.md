@@ -40,5 +40,7 @@ Le site est déployé automatiquement via **GitHub Pages** :
 
 /
 ├── assets/ # Images et visuels
+
 ├── index.html # Page principale du portfolio
+
 └── README.md # Ce fichier
