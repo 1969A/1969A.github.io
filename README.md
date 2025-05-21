@@ -38,7 +38,7 @@ Le site est déployé automatiquement via **GitHub Pages** :
 
 ## 📁 Structure du projet
 
-/
+
 ├── assets/ # Images et visuels
 
 ├── index.html # Page principale du portfolio
