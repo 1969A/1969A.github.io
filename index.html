@@ -810,41 +810,36 @@
 
 <script type="module">
     import emailjs from 'https://cdn.emailjs.com/dist/email.min.mjs';
-  // Initialise EmailJS avec clé publique
-  (function() {
+  // Initialisation
+  (function () {
+    console.log("Initialisation EmailJS...");
     emailjs.init("fn9VDe-g1AcFSNLPB"); 
   })();
 
-  // Soumission du formulaire
-  document.getElementById('contact-form').addEventListener('submit', function(e) {
-    e.preventDefault();
+  // Formulaire
+  const form = document.getElementById('contact-form');
 
-emailjs.sendForm('service_gmail', 'templatecontactportfolio', this)
-  .then(function(response) {
-      console.log('SUCCESS!', response.status, response.text); // 🔍 AJOUT
-      const status = document.getElementById('form-status');
-      status.innerText = '✅ Message envoyé avec succès !';
-      status.classList.remove('text-gray-400');
-      status.classList.remove('text-red-400');
-      status.classList.add('text-green-400');
+  if (!form) {
+    console.error("❌ Le formulaire #contact-form est introuvable.");
+  } else {
+    console.log("✅ Formulaire trouvé.");
 
-      setTimeout(() => {
-          status.innerText = '';
-          status.classList.remove('text-green-400');
-          status.classList.add('text-gray-400');
-      }, 5000);
-  })
-  .catch(function(error) {
-      console.error('FAILED...', error); // 🔍 AJOUT
-      const status = document.getElementById('form-status');
-      status.innerText = '❌ Échec de l’envoi. Veuillez réessayer.';
-      status.classList.remove('text-gray-400');
-      status.classList.remove('text-green-400');
-      status.classList.add('text-red-400');
-  });
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      console.log("🚀 Envoi du formulaire en cours...");
 
-this.reset(); // réinitialise le formulaire
-  });
+      emailjs.sendForm('service_gmail', 'templatecontactportfolio', this)
+        .then(function (response) {
+          console.log("✅ EmailJS succès :", response.status, response.text);
+          document.getElementById('form-status').innerText = '✅ Message envoyé avec succès !';
+        }, function (error) {
+          console.error("❌ EmailJS erreur :", error);
+          document.getElementById('form-status').innerText = '❌ Échec de l’envoi. Vérifie la console.';
+        });
+
+      this.reset();
+    });
+  }
 </script>
 
 <!-- Script pour gérer les modals -->
