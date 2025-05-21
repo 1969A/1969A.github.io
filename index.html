@@ -819,13 +819,28 @@
     e.preventDefault();
 
     emailjs.sendForm('service_gmail', 'templatecontactportfolio', this)
-      .then(function(response) {
-         document.getElementById('form-status').innerText = 'Message envoyé avec succès !';
-      }, function(error) {
-         document.getElementById('form-status').innerText = 'Échec de l’envoi. Veuillez réessayer.';
-      });
+  .then(function(response) {
+      const status = document.getElementById('form-status');
+      status.innerText = '✅ Message envoyé avec succès !';
+      status.classList.remove('text-gray-400');
+      status.classList.remove('text-red-400');
+      status.classList.add('text-green-400');
 
-    this.reset(); // réinitialise le formulaire
+      setTimeout(() => {
+          status.innerText = '';
+          status.classList.remove('text-green-400');
+          status.classList.add('text-gray-400');
+      }, 5000);
+  })
+  .catch(function(error) {
+      const status = document.getElementById('form-status');
+      status.innerText = '❌ Échec de l’envoi. Veuillez réessayer.';
+      status.classList.remove('text-gray-400');
+      status.classList.remove('text-green-400');
+      status.classList.add('text-red-400');
+  });
+
+this.reset(); // réinitialise le formulaire
   });
 </script>
 
