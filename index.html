@@ -765,7 +765,7 @@
         </button>
         
         <!-- Contenu du modal -->
-        <div class="p-8">
+        <div class="p-8 overflow-auto max-h-[90vh]">
             <div class="flex flex-col md:flex-row gap-8">
                 <!-- Image du projet -->
                 <div class="md:w-1/2">
@@ -984,6 +984,7 @@ function openProjectModal(projectId) {
     // Afficher le modal
     document.getElementById('projectModal').classList.remove('hidden');
     document.body.style.overflow = 'hidden'; // Empêcher le défilement de la page
+    
 }
 
 // Ajouter des écouteurs d'événements lorsque le DOM est chargé
@@ -999,6 +1000,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.target === document.getElementById('projectModal')) {
             document.getElementById('projectModal').classList.add('hidden');
             document.body.style.overflow = 'auto';
+            
         }
     });
     
