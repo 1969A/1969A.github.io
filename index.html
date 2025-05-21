@@ -807,8 +807,9 @@
     </div>
 </div>
 
-<script src="https://cdn.emailjs.com/dist/email.min.js"></script>
-<script>
+
+<script type="module">
+    import emailjs from 'https://cdn.emailjs.com/dist/email.min.mjs';
   // Initialise EmailJS avec clé publique
   (function() {
     emailjs.init("fn9VDe-g1AcFSNLPB"); 
