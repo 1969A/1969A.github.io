@@ -818,8 +818,9 @@
   document.getElementById('contact-form').addEventListener('submit', function(e) {
     e.preventDefault();
 
-    emailjs.sendForm('service_gmail', 'templatecontactportfolio', this)
+emailjs.sendForm('service_gmail', 'templatecontactportfolio', this)
   .then(function(response) {
+      console.log('SUCCESS!', response.status, response.text); // 🔍 AJOUT
       const status = document.getElementById('form-status');
       status.innerText = '✅ Message envoyé avec succès !';
       status.classList.remove('text-gray-400');
@@ -833,6 +834,7 @@
       }, 5000);
   })
   .catch(function(error) {
+      console.error('FAILED...', error); // 🔍 AJOUT
       const status = document.getElementById('form-status');
       status.innerText = '❌ Échec de l’envoi. Veuillez réessayer.';
       status.classList.remove('text-gray-400');
