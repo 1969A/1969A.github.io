@@ -141,10 +141,10 @@
                             <i class="fa-solid fa-spinner animate-spin text-orange-400"></i>
                             Progression globale
                         </span>
-                        <span id="progress-percent-text" class="text-orange-400 font-bold">26%</span>
+                        <span id="progress-percent-text" class="text-orange-400 font-bold">31%</span>
                     </div>
                     <div class="w-full h-2.5 bg-neutral-900 rounded-full overflow-hidden p-0.5 border border-neutral-800">
-                        <div id="progress-bar" class="h-full bg-gradient-to-r from-orange-500 via-amber-400 to-rose-500 rounded-full transition-all duration-1000 ease-out shadow-sm shadow-orange-500/50" style="width: 26%;"></div>
+                        <div id="progress-bar" class="h-full bg-gradient-to-r from-orange-500 via-amber-400 to-rose-500 rounded-full transition-all duration-1000 ease-out shadow-sm shadow-orange-500/50" style="width: 31%;"></div>
                     </div>
                 </div>
 
@@ -203,14 +203,14 @@
                             <span class="w-3 h-3 rounded-full bg-red-500/80 inline-block"></span>
                             <span class="w-3 h-3 rounded-full bg-yellow-500/80 inline-block"></span>
                             <span class="w-3 h-3 rounded-full bg-green-500/80 inline-block"></span>
-                            <span class="text-xs font-mono text-gray-400 ml-2">git-activity.sh — all-branches</span>
+                            <span class="text-xs font-mono text-gray-400 ml-2">deploy-v2.log — all-branches — live feed</span>
                         </div>
                         <div class="flex items-center space-x-2">
                             <span class="flex h-2 w-2 relative">
                                 <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                                 <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
                             </span>
-                            <span class="text-[10px] font-mono text-green-400">LIVE LOGS</span>
+                            <span class="text-[10px] font-mono text-green-400">LIVE </span>
                         </div>
                     </div>
 
@@ -253,7 +253,7 @@
             <a href="https://github.com/1969a" target="_blank" rel="noopener noreferrer" title="GitHub" class="w-9 h-9 rounded-lg bg-neutral-900 border border-neutral-800 flex items-center justify-center text-gray-400 hover:text-white hover:border-orange-500/50 hover:bg-neutral-800 transition-all">
                 <i class="fa-brands fa-github text-sm"></i>
             </a>
-            <a href="mailto:contact@1969a.github.io" title="Contact Email" class="w-9 h-9 rounded-lg bg-neutral-900 border border-neutral-800 flex items-center justify-center text-gray-400 hover:text-white hover:border-orange-500/50 hover:bg-neutral-800 transition-all">
+            <a href="mailto:1969ag@proton.me" title="Contact Email" class="w-9 h-9 rounded-lg bg-neutral-900 border border-neutral-800 flex items-center justify-center text-gray-400 hover:text-white hover:border-orange-500/50 hover:bg-neutral-800 transition-all">
                 <i class="fa-regular fa-envelope text-sm"></i>
             </a>
         </div>
@@ -347,79 +347,95 @@
         const terminalBody = document.getElementById('terminal-body');
         const commitCounter = document.getElementById('commit-counter');
 
-        // Utilisation correcte d'un Set pour stocker les SHA affichés
         let displayedCommitShas = new Set();
 
         async function fetchGitHubCommits() {
-            try {
-                // Récupération simultanée des commits des deux branches
-                const [resMain, resDev] = await Promise.all([
-                    fetch('https://api.github.com/repos/1969A/1969A.github.io/commits?sha=main&per_page=30'),
-                    fetch('https://api.github.com/repos/1969A/1969A.github.io/commits?sha=dev&per_page=30')
-                ]);
+            const CACHE_KEY = 'github_commits_cache';
+            const CACHE_TIME_KEY = 'github_commits_time';
+            const CACHE_DURATION = 15 * 60 * 1000; // Cache de 15 minutes
 
-                const commitsMain = resMain.ok ? await resMain.json() : [];
-                const commitsDev = resDev.ok ? await resDev.json() : [];
+            let allCommits = [];
+            const cachedData = localStorage.getItem(CACHE_KEY);
+            const cachedTime = localStorage.getItem(CACHE_TIME_KEY);
+            const now = new Date().getTime();
 
-                // Map pour éliminer les doublons par SHA
-                const commitsMap = new Map();
+            // Si le cache est valide, on l'utilise
+            if (cachedData && cachedTime && (now - cachedTime < CACHE_DURATION)) {
+                allCommits = JSON.parse(cachedData);
+            } else {
+                try {
+                    const [resMain, resDev] = await Promise.all([
+                        fetch('https://api.github.com/repos/1969A/1969A.github.io/commits?sha=main&per_page=30'),
+                        fetch('https://api.github.com/repos/1969A/1969A.github.io/commits?sha=dev&per_page=30')
+                    ]);
 
-                // Traiter d'abord dev
-                commitsDev.forEach(commit => {
-                    commitsMap.set(commit.sha, {
-                        data: commit,
-                        branch: 'dev'
-                    });
-                });
-
-                // Traiter main (prioritaire sur le tag si présent sur les deux)
-                commitsMain.forEach(commit => {
-                    commitsMap.set(commit.sha, {
-                        data: commit,
-                        branch: 'main'
-                    });
-                });
-
-                // Tri chronologique du plus ancien au plus récent
-                const allCommits = Array.from(commitsMap.values()).sort((a, b) => {
-                    const dateA = new Date(a.data.commit.author ? a.data.commit.author.date : a.data.commit.committer.date);
-                    const dateB = new Date(b.data.commit.author ? b.data.commit.author.date : b.data.commit.committer.date);
-                    return dateA - dateB;
-                });
-
-                // Premier chargement
-                if (displayedCommitShas.size === 0) {
-                    logsContainer.innerHTML = '';
-                    allCommits.forEach(item => {
-                        appendCommitToTerminal(item.data, item.branch, false);
-                        displayedCommitShas.add(item.data.sha);
-                    });
-                    commitCounter.textContent = `(${displayedCommitShas.size} commits)`;
-                    terminalBody.scrollTop = terminalBody.scrollHeight;
-                    return;
-                }
-
-                // Vérification des nouveautés en direct
-                let hasNewCommits = false;
-                allCommits.forEach(item => {
-                    if (!displayedCommitShas.has(item.data.sha)) {
-                        hasNewCommits = true;
-                        appendCommitToTerminal(item.data, item.branch, true);
-                        displayedCommitShas.add(item.data.sha);
+                    if (resMain.status === 403 || resDev.status === 403) {
+                        throw new Error("Limite de requêtes GitHub atteinte (403)");
                     }
-                });
 
-                if (hasNewCommits) {
-                    commitCounter.textContent = `(${displayedCommitShas.size} commits)`;
-                    terminalBody.scrollTop = terminalBody.scrollHeight;
+                    const commitsMain = resMain.ok ? await resMain.json() : [];
+                    const commitsDev = resDev.ok ? await resDev.json() : [];
+
+                    const commitsMap = new Map();
+                    if (Array.isArray(commitsDev)) {
+                        commitsDev.forEach(commit => commitsMap.set(commit.sha, { data: commit, branch: 'dev' }));
+                    }
+                    if (Array.isArray(commitsMain)) {
+                        commitsMain.forEach(commit => commitsMap.set(commit.sha, { data: commit, branch: 'main' }));
+                    }
+
+                    allCommits = Array.from(commitsMap.values()).sort((a, b) => {
+                        const dateA = new Date(a.data.commit.author ? a.data.commit.author.date : a.data.commit.committer.date);
+                        const dateB = new Date(b.data.commit.author ? b.data.commit.author.date : b.data.commit.committer.date);
+                        return dateA - dateB;
+                    });
+
+                    if (allCommits.length > 0) {
+                        localStorage.setItem(CACHE_KEY, JSON.stringify(allCommits));
+                        localStorage.setItem(CACHE_TIME_KEY, now);
+                    }
+                } catch (error) {
+                    console.error("Erreur API :", error);
+                    if (cachedData) {
+                        allCommits = JSON.parse(cachedData);
+                    } else {
+                        logsContainer.innerHTML = `<div class="text-red-400">[ERREUR 403] Limite GitHub atteinte. Patientez quelques minutes.</div>`;
+                        return;
+                    }
                 }
+            }
 
-            } catch (error) {
-                console.error("Erreur lors de la récupération des commits:", error);
+            if (allCommits.length === 0) {
+                logsContainer.innerHTML = `<div class="text-amber-400">[AVERTISSEMENT] Aucun commit trouvé.</div>`;
+                return;
+            }
+
+            if (displayedCommitShas.size === 0) {
+                logsContainer.innerHTML = '';
+                allCommits.forEach(item => {
+                    appendCommitToTerminal(item.data, item.branch, false);
+                    displayedCommitShas.add(item.data.sha);
+                });
+                commitCounter.textContent = `(${displayedCommitShas.size} commits)`;
+                terminalBody.scrollTop = terminalBody.scrollHeight;
+                return;
+            }
+
+            let hasNewCommits = false;
+            allCommits.forEach(item => {
+                if (!displayedCommitShas.has(item.data.sha)) {
+                    hasNewCommits = true;
+                    appendCommitToTerminal(item.data, item.branch, true);
+                    displayedCommitShas.add(item.data.sha);
+                }
+            });
+
+            if (hasNewCommits) {
+                commitCounter.textContent = `(${displayedCommitShas.size} commits)`;
+                terminalBody.scrollTop = terminalBody.scrollHeight;
             }
         }
 
-        // Ajouter une ligne de commit au terminal
         function appendCommitToTerminal(commit, branch = 'dev', animate = false) {
             const sha = commit.sha.substring(0, 7);
             const message = commit.commit.message.split('\n')[0];
@@ -431,7 +447,6 @@
             const formattedTime = dateObj.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
             const dateTimeStr = `${formattedDate} ${formattedTime}`;
 
-            // Choisir la couleur du badge selon la branche
             const branchColorClass = branch === 'main' ? 'text-green-400 border-green-500/30' : 'text-amber-400 border-amber-500/30';
 
             const div = document.createElement('div');
@@ -458,18 +473,18 @@
             }
         }
 
-        // Charger les commits au démarrage
+        // Lancement initial + rafraîchissement toutes les 15 minutes uniquement
         fetchGitHubCommits();
-
-        // Rafraîchir toutes les 30 secondes
-        setInterval(fetchGitHubCommits, 30000);
+        setInterval(fetchGitHubCommits, 15 * 60 * 1000);
 
         function clearTerminal() {
+            localStorage.removeItem('github_commits_cache');
+            localStorage.removeItem('github_commits_time');
             displayedCommitShas.clear();
             logsContainer.innerHTML = '';
             commitCounter.textContent = '(0 commits)';
             fetchGitHubCommits();
-            showToast('Terminal réinitialisé et synchronisé avec main & dev', 'info');
+            showToast('Cache vidé, terminal réinitialisé et synchronisé !', 'info');
         }
 
         async function handleSubscribe(e) {
