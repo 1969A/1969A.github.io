@@ -151,7 +151,7 @@
                 </div>
 
                 <div class="pt-2 max-w-lg">
-                    <form id="subscribe-form" onsubmit="handleSubscribe(event)" class="relative flex flex-col sm:flex-row gap-3">
+                    <form id="subscribe-form" action="https://formspree.io/f/mnppqrrq" onsubmit="handleSubscribe(event)" class="relative flex flex-col sm:flex-row gap-3">
                         <div class="relative flex-grow">
                             <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-500">
                                 <i class="fa-regular fa-envelope"></i>
@@ -159,8 +159,9 @@
                             <input 
                                 type="email" 
                                 id="email-input"
+                                name="email"
                                 required
-                                placeholder="non fonctionnel" 
+                                placeholder="votre@email.com" 
                                 class="w-full pl-11 pr-4 py-3.5 bg-neutral-900/90 text-white placeholder-gray-500 rounded-xl border border-neutral-700/80 focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 text-sm transition-all"
                             />
                         </div>
@@ -392,32 +393,54 @@
             showToast('Terminal réinitialisé', 'info');
         }
 
-        function handleSubscribe(e) {
-            e.preventDefault();
-            const emailInput = document.getElementById('email-input');
-            const submitBtn = document.getElementById('submit-btn');
-            const email = emailInput.value.trim();
+        async function handleSubscribe(e) {
+                    e.preventDefault();
+                    const form = e.target;
+                    const emailInput = document.getElementById('email-input');
+                    const submitBtn = document.getElementById('submit-btn');
+                    const email = emailInput.value.trim();
 
-            if (!email) return;
+                    if (!email) return;
 
-            submitBtn.disabled = true;
-            submitBtn.classList.add('opacity-80', 'cursor-not-allowed');
-            submitBtn.innerHTML = '<i class="fa-solid fa-spinner animate-spin"></i> <span>Enregistrement...</span>';
+                    submitBtn.disabled = true;
+                    submitBtn.classList.add('opacity-80', 'cursor-not-allowed');
+                    submitBtn.innerHTML = '<i class="fa-solid fa-spinner animate-spin"></i> <span>Enregistrement...</span>';
 
-            setTimeout(() => {
-                showToast('Merci ! Vous recevrez une alerte au lancement du site.', 'success');
-                emailInput.value = '';
-                
-                submitBtn.disabled = false;
-                submitBtn.classList.remove('opacity-80', 'cursor-not-allowed');
-                submitBtn.innerHTML = '<span>Me prévenir</span><i class="fa-solid fa-check text-xs"></i>';
+                    try {
+                        const formData = new FormData(form);
+                        const response = await fetch(form.action, {
+                            method: 'POST',
+                            body: formData,
+                            headers: {
+                                'Accept': 'application/json'
+                        }
+                        });
 
-                setTimeout(() => {
-                    submitBtn.innerHTML = '<span>Me prévenir</span><i class="fa-solid fa-arrow-right text-xs group-hover:translate-x-1 transition-transform"></i>';
-                }, 3000);
+                        if (response.ok) {
+                            showToast('Merci ! Vous recevrez une alerte au lancement du site.', 'success');
+                            emailInput.value = '';
+                            submitBtn.innerHTML = '<span>Me prévenir</span><i class="fa-solid fa-check text-xs"></i>';
+                        } else {
+                            const data = await response.json();
+                            if (data.errors) {
+                                showToast(data.errors.map(error => error.message).join(", "), 'info');
+                            } else {
+                                showToast('Une erreur est survenue. Veuillez réessayer.', 'info');
+                            }
+                            submitBtn.innerHTML = '<span>Me prévenir</span><i class="fa-solid fa-arrow-right text-xs"></i>';
+                        }
+                    } catch (error) {
+                        showToast('Erreur de réseau. Vérifiez votre connexion.', 'info');
+                        submitBtn.innerHTML = '<span>Me prévenir</span><i class="fa-solid fa-arrow-right text-xs"></i>';
+                    } finally {
+                        submitBtn.disabled = false;
+                        submitBtn.classList.remove('opacity-80', 'cursor-not-allowed');
 
-            }, 1000);
-        }
+                        setTimeout(() => {
+                            submitBtn.innerHTML = '<span>Me prévenir</span><i class="fa-solid fa-arrow-right text-xs group-hover:translate-x-1 transition-transform"></i>';
+                        }, 3000);
+                    }
+                }
 
         function showToast(message, type = 'success') {
             const container = document.getElementById('toast-container');
