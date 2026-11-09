@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 /* =================================================================
-   2. ANIMATION DES PARTICULES (Canvas - Commun à toutes les pages)
+   2. ANIMATION DES PARTICULES 
    ================================================================ */
 const canvas = document.getElementById('particles-canvas');
 if (canvas) {
@@ -112,10 +112,10 @@ const logsContainer = document.getElementById('dynamic-logs');
 const terminalBody = document.getElementById('terminal-body');
 const commitCounter = document.getElementById('commit-counter');
 
-// Logs personnalisés selon la page détectée (index.html ou accueil.html)
-const isAccueilPage = window.location.pathname.includes('accueil.html');
+// Logs personnalisés selon la page 
+const isRefontePage = window.location.pathname.includes('refonte.html');
 
-const customDevLogs = isAccueilPage ? [
+const customDevLogs = isRefontePage ? [
     { tag: "[INIT]", color: "text-amber-400", text: "Chargement du profil d'Arthur Guillemin...", fullColor: true },
     { tag: "[STACK]", color: "text-green-400", text: "JavaScript, HTML5/CSS3, Tailwind, Apps Script" },
     { tag: "[SLAM]", color: "text-blue-400", text: "Spécialité Solutions Logicielles & BDD SQL" },
@@ -145,7 +145,7 @@ async function fetchGitHubCommitsAndRender() {
     const now = new Date().getTime();
 
     // Si on est sur l'index, on va chercher les vrais commits GitHub en plus
-    if (!isAccueilPage) {
+    if (!isRefontePage) {
         if (cachedData && cachedTime && (now - cachedTime < CACHE_DURATION)) {
             allCommits = JSON.parse(cachedData);
         } else {
@@ -321,7 +321,7 @@ function typeCommitLog(commit, branch = 'dev') {
 // Lancement du terminal si l'élément existe
 if (logsContainer) {
     fetchGitHubCommitsAndRender();
-    if (!isAccueilPage) {
+    if (!isRefontePage) {
         setInterval(fetchGitHubCommitsAndRender, 15 * 60 * 1000);
     }
 }
@@ -335,7 +335,7 @@ function clearTerminal() {
 
 
 /* =================================================================
-   4. FILTRAGE DES PROJETS (Spécifique accueil.html)
+   4. FILTRAGE DES PROJETS (Spécifique index.html)
    ================================================================ */
 window.filterProjects = function(category) {
     const cards = document.querySelectorAll('.project-card');
