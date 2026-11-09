@@ -27,7 +27,7 @@ Le projet repose sur des technologies web modernes et performantes :
 
 ## 📁 Structure du Projet
 
-```text
+
 ├── assets/          # Visuels, favicons et ressources graphiques
 ├── index.html       # Page principale du portfolio (Accueil, Projets, Stack, Expérience, Contact)[cite: 2]
 ├── refonte.html     # Page alternative / Suivi de refonte dynamique[cite: 4]
@@ -35,7 +35,7 @@ Le projet repose sur des technologies web modernes et performantes :
 ├── script.js        # Logique front-end (particules canvas, terminal dynamique, gestion des formulaires)[cite: 5]
 └── README.md        # Documentation du projet[cite: 3]
 
-```
+
 
 ---
 
