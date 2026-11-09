@@ -46,4 +46,4 @@ Le site est hébergé et déployé automatiquement via **GitHub Pages** :
 * **Branche de déploiement :** `main`
 
 
-* **URL publique :** [https://1969a.github.io](https://www.google.com/search?q=https://1969a.github.io)
+* **URL publique :** [https://1969a.github.io]
