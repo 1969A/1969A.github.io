@@ -1,46 +1,49 @@
-# 🌐 Portfolio – Arthur
+# 🌐 Portfolio – Arthur Guillemin
 
-Bienvenue sur le dépôt GitHub de mon **portfolio personnel**. Ce site met en valeur mes projets, mes compétences et mon parcours en tant que **designer web** et **développeur front-end**.
+Bienvenue sur le dépôt GitHub de mon **portfolio personnel** (`1969a.github.io`). Ce projet met en valeur mes compétences techniques en tant qu'étudiant développeur (BTS SIO option SLAM), mes réalisations (applications web, scripts d'automatisation, utilitaires) et mon parcours.
 
-## 🔍 Aperçu
-
-Ce portfolio a été conçu pour refléter à la fois mes compétences techniques et mon sens du design. Il est **responsive**, animé et structuré autour des sections suivantes :
-
-- Accueil
-- Formation
-- Projets (applications complètes & petits projets)
-- À propos
-- Contact
-- Veille technologique
-
-👉 [Voir le site en ligne](https://1969a.github.io)
+👉 **[Voir le site en ligne](https://www.google.com/search?q=https://1969a.github.io)**
 
 ---
 
-## 🛠️ Technologies utilisées
+## 🛠️ Stack Technique
 
-- HTML5
-- Tailwind CSS
-- JavaScript
-- Font Awesome
-- EmailJS (pour le formulaire de contact)
+Le projet repose sur des technologies web modernes et performantes :
+
+* **Structure & Style :** HTML5, Tailwind CSS (avec configuration personnalisée et design *Dark Mode* aux accents ambre/orange/rose)
+
+
+* **Logique & Interactivité :** JavaScript (Vanilla), animations dynamiques (Canvas, flux de logs de terminal interactifs connectés aux branches `main`/`dev`)
+
+
+* **Formulaires & Services :** Intégration de Formspree pour la gestion sécurisée des messages de contact
+
+
+* **Icônes & Polices :** Font Awesome, Google Fonts (*Inter* & *Fira Code*)
+
 
 
 ---
 
-## 🚀 Mise en ligne
+## 📁 Structure du Projet
 
-Le site est déployé automatiquement via **GitHub Pages** :
-- Branche : `main`
-- URL : `https://1969a.github.io`
+```text
+├── assets/          # Visuels, favicons et ressources graphiques
+├── index.html       # Page principale du portfolio (Accueil, Projets, Stack, Expérience, Contact)[cite: 2]
+├── refonte.html     # Page alternative / Suivi de refonte dynamique[cite: 4]
+├── cgu.html         # Conditions Générales d'Utilisation & Mentions Légales (RGPD & LCEN)[cite: 1]
+├── script.js        # Logique front-end (particules canvas, terminal dynamique, gestion des formulaires)[cite: 5]
+└── README.md        # Documentation du projet[cite: 3]
+
+```
 
 ---
 
-## 📁 Structure du projet
+## 🚀 Déploiement
+
+Le site est hébergé et déployé automatiquement via **GitHub Pages** :
+
+* **Branche de déploiement :** `main`
 
 
-├── assets/ # Images et visuels
-
-├── index.html # Page principale du portfolio
-
-└── README.md # Ce fichier
+* **URL publique :** [https://1969a.github.io](https://www.google.com/search?q=https://1969a.github.io)

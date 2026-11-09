@@ -106,16 +106,18 @@ if (canvas) {
 
 
 /* =================================================================
-   3. TERMINAL INTERACTIF & GITHUB COMMITS (Spécifique index.html / accueil.html)
+   3. TERMINAL INTERACTIF & GITHUB COMMITS
    ================================================================ */
 const logsContainer = document.getElementById('dynamic-logs');
 const terminalBody = document.getElementById('terminal-body');
 const commitCounter = document.getElementById('commit-counter');
 
-// Logs personnalisés selon la page 
+// On détecte uniquement si on est sur la page de test/refonte dédiée
 const isRefontePage = window.location.pathname.includes('refonte.html');
 
-const customDevLogs = isRefontePage ? [
+// PAR DÉFAUT (sur index.html ou la racine) : Affiche tes logs de profil Arthur Guillemin
+// SI ON EST SUR REFONTE : Affiche les logs de l'architecture V2.0
+const customDevLogs = !isRefontePage ? [
     { tag: "[INIT]", color: "text-amber-400", text: "Chargement du profil d'Arthur Guillemin...", fullColor: true },
     { tag: "[STACK]", color: "text-green-400", text: "JavaScript, HTML5/CSS3, Tailwind, Apps Script" },
     { tag: "[SLAM]", color: "text-blue-400", text: "Spécialité Solutions Logicielles & BDD SQL" },
@@ -133,7 +135,7 @@ let logQueue = [];
 let isTyping = false;
 
 async function fetchGitHubCommitsAndRender() {
-    if (!logsContainer) return; // Si la page n'a pas de terminal, on arrête
+    if (!logsContainer) return;
 
     const CACHE_KEY = 'github_commits_cache';
     const CACHE_TIME_KEY = 'github_commits_time';
@@ -144,8 +146,8 @@ async function fetchGitHubCommitsAndRender() {
     const cachedTime = localStorage.getItem(CACHE_TIME_KEY);
     const now = new Date().getTime();
 
-    // Si on est sur l'index, on va chercher les vrais commits GitHub en plus
-    if (!isRefontePage) {
+    // On va chercher les vrais commits GitHub UNIQUEMENT si on est sur la page refonte.html
+    if (isRefontePage) {
         if (cachedData && cachedTime && (now - cachedTime < CACHE_DURATION)) {
             allCommits = JSON.parse(cachedData);
         } else {
@@ -321,7 +323,8 @@ function typeCommitLog(commit, branch = 'dev') {
 // Lancement du terminal si l'élément existe
 if (logsContainer) {
     fetchGitHubCommitsAndRender();
-    if (!isRefontePage) {
+    // On rafraîchit via l'API GitHub uniquement si on est sur la page de refonte
+    if (isRefontePage) {
         setInterval(fetchGitHubCommitsAndRender, 15 * 60 * 1000);
     }
 }
