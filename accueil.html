@@ -103,29 +103,32 @@
     <!-- Canvas Particules -->
     <canvas id="particles-canvas" class="fixed inset-0 pointer-events-none z-0"></canvas>
 
-    <!-- Header conserve a l'identique avec navigation complete -->
-    <header class="relative z-20 w-full max-w-7xl mx-auto px-6 py-6 flex flex-col md:flex-row justify-between items-center gap-4">
-        <a href="#hero" class="flex items-center space-x-3 group cursor-pointer">
-            <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-orange-500 to-rose-600 p-[1px] shadow-lg shadow-orange-500/20 transition-transform group-hover:scale-105">
-                <div class="w-full h-full bg-neutral-950 rounded-[11px] flex items-center justify-center">
-                    <span class="font-mono font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-rose-400 text-lg">AG</span>
+    <!-- Header  -->
+    <header class="sticky top-0 z-50 w-full px-6 py-6 bg-transparent">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+            <a id="logo-box" href="#hero" class="flex items-center space-x-3 group cursor-pointer px-4 py-2 rounded-full border border-transparent transition-all duration-300">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-orange-500 to-rose-600 p-[1px] shadow-lg shadow-orange-500/20 transition-transform group-hover:scale-105">
+                    <div class="w-full h-full bg-neutral-950 rounded-[11px] flex items-center justify-center">
+                        <span class="font-mono font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-rose-400 text-lg">AG</span>
+                    </div>
                 </div>
-            </div>
-            <span class="font-mono font-bold text-xl tracking-wider text-white">1969a<span class="text-orange-400 animate-pulse">.github.io</span></span>
-        </a>
+                <span class="font-mono font-bold text-xl tracking-wider text-white">1969a<span class="text-orange-400 animate-pulse">.github.io</span></span>
+            </a>
 
-        <!-- Navigation principale -->
-        <nav class="hidden md:flex items-center space-x-1 px-4 py-1.5 rounded-full glass-card text-xs font-mono">
-            <a href="#about" class="px-3 py-1.5 text-gray-300 hover:text-orange-400 transition-colors rounded-lg hover:bg-white/5">À Propos</a>
-            <a href="#skills" class="px-3 py-1.5 text-gray-300 hover:text-orange-400 transition-colors rounded-lg hover:bg-white/5">Compétences</a>
-            <a href="#projects" class="px-3 py-1.5 text-gray-300 hover:text-orange-400 transition-colors rounded-lg hover:bg-white/5">Projets</a>
-            <a href="#experience" class="px-3 py-1.5 text-gray-300 hover:text-orange-400 transition-colors rounded-lg hover:bg-white/5">Parcours</a>
-            <a href="#contact" class="px-3 py-1.5 text-gray-300 hover:text-orange-400 transition-colors rounded-lg hover:bg-white/5">Contact</a>
-        </nav>
+            <!-- Navigation principale -->
+            <nav class="hidden md:flex items-center space-x-1 px-4 py-1.5 rounded-full glass-card text-xs font-mono">
+                <a href="#about" class="px-3 py-1.5 text-gray-300 hover:text-orange-400 transition-colors rounded-lg hover:bg-white/5">À Propos</a>
+                <a href="#skills" class="px-3 py-1.5 text-gray-300 hover:text-orange-400 transition-colors rounded-lg hover:bg-white/5">Compétences</a>
+                <a href="#projects" class="px-3 py-1.5 text-gray-300 hover:text-orange-400 transition-colors rounded-lg hover:bg-white/5">Projets</a>
+                <a href="#experience" class="px-3 py-1.5 text-gray-300 hover:text-orange-400 transition-colors rounded-lg hover:bg-white/5">Parcours</a>
+                <a href="#contact" class="px-3 py-1.5 text-gray-300 hover:text-orange-400 transition-colors rounded-lg hover:bg-white/5">Contact</a>
+            </nav>
 
-        <div class="flex items-center space-x-3">
-            <div class="inline-flex items-center px-3 py-1 rounded-full text-xs font-mono bg-green-500/10 text-green-400 border border-green-500/20">
-                <span class="w-2 h-2 rounded-full bg-green-400 animate-ping mr-2"></span>
+            <div class="inline-flex items-center px-3 py-1 rounded-full text-xs font-mono glass-card bg-green-500/20 text-green-400 border border-green-500/30">
+                <span class="relative flex h-2 w-2 mr-2">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                </span>
                 <span>DISPONIBLE POUR PROJETS</span>
             </div>
         </div>

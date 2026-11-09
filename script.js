@@ -440,3 +440,20 @@ function showToast(message, type = 'success') {
         setTimeout(() => { toast.remove(); }, 300);
     }, 4000);
 }
+
+// Apparition du fond glass sur le logo au scroll
+const logoBox = document.getElementById('logo-box');
+
+if (logoBox) {
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 10) {
+            // Ajout du fond et de la bordure au scroll
+            logoBox.classList.add('glass-card', 'border-neutral-800');
+            logoBox.classList.remove('border-transparent');
+        } else {
+            // Retour à la transparence tout en haut
+            logoBox.classList.remove('glass-card', 'border-neutral-800');
+            logoBox.classList.add('border-transparent');
+        }
+    });
+}
