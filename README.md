@@ -29,11 +29,11 @@ Le projet repose sur des technologies web modernes et performantes :
 
 ```text
 ├── assets/          # Visuels, favicons et ressources graphiques
-├── index.html       # Page principale du portfolio (Accueil, Projets, Stack, Expérience, Contact)[cite: 2]
-├── refonte.html     # Page alternative / Suivi de refonte dynamique[cite: 4]
-├── cgu.html         # Conditions Générales d'Utilisation & Mentions Légales (RGPD & LCEN)[cite: 1]
-├── script.js        # Logique front-end (particules canvas, terminal dynamique, gestion des formulaires)[cite: 5]
-└── README.md        # Documentation du projet[cite: 3]
+├── index.html       # Page principale du portfolio (Accueil, Projets, Stack, Expérience, Contact)
+├── refonte.html     # Page alternative / Suivi de refonte dynamique
+├── cgu.html         # Conditions Générales d'Utilisation & Mentions Légales (RGPD & LCEN)
+├── script.js        # Logique front-end (particules canvas, terminal dynamique, gestion des formulaires)
+└── README.md        # Documentation du projet
 ```
 
 
